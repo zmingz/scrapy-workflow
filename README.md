@@ -16,44 +16,45 @@
 
 ## 服务器安装mysql数据库
 
-        (1)安装mysql服务:$sudo apt-get install mysql-server
-        (2)查看是否启动服务:$ps aux|grep mysqld
-        (3)设置用户名和密码:
-            $mysql -uroot -p
-            Enter password:******
-            mysql>show database;
-            mysql>exit;		
-        (4)配置mysqld.conf文件让外部客户端可连进服务器:
-            $sudo vim /etc/mysql/mysql.config.d/mysqld.cnf，然后把文件里面的bind-address:127.0.0.1修改为0.0.0.0，输入shift+:wq，输入Enter键确认
-            $sudo service mysql restart
-            $ps aux|grep mysqld
-        (5)重新登录mysql:
-            $mysql -uroot -p
-            Enter password:123456
-            mysql>GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'ttt' WITH GRANT OPTION;
-            mysql>flush pirvileges;
-        (6)云服务器的安全组要开放3306端口
+	(1)安装mysql服务:$sudo apt-get install mysql-server
+	(2)查看是否启动服务:$ps aux|grep mysqld
+	(3)设置用户名和密码:
+		$mysql -uroot -p
+		Enter password:******
+		mysql>show database;
+		mysql>exit;		
+	(4)配置mysqld.conf文件让外部客户端可连进服务器:
+		$sudo vim /etc/mysql/mysql.config.d/mysqld.cnf
+		然后把文件里面的bind-address:127.0.0.1修改为0.0.0.0，输入shift+:wq，输入Enter键确认
+		$sudo service mysql restart
+		$ps aux|grep mysqld
+	(5)重新登录mysql:
+		$mysql -uroot -p
+		Enter password:123456
+		mysql>GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'ttt' WITH GRANT OPTION;
+		mysql>flush pirvileges;
+	(6)云服务器的安全组要开放3306端口
 
 
 ## python和虚拟环境的安装以及配置,下面的安装和服务器的虚拟环境安装是一样的，这里我就以服务器安装举例啦
 
-        (1)安装python3.5 for pip: $sudo apt-get install python3.5
-        (2)安装python2.7 for pip: $sudo apt-get install python-pip
-        (3)安装python3.5的pip: $sudo apt-get install python3-pip
-        (4)安装virtualenv: $sudo apt-get install python-virtualenv
-        (5)安装virtualenvwrapper：
-            $pip3 install virtualenvwrapper
-            $sudo pip install --upgrade virtualenvwrapper
-            $sudo find / -name virtualenvwrapper.sh查看它的安装路径在"/home/ubuntu/.local/bin/virtualenvwrapper.sh"
-            $vim ~/.bashrc，shift+G跳转到最后一行，输入insert，然后写入：
-                export WORKON_HOME=$HOME/.virtualenvs
-                export VIRTUALENVWRAPPER_PYTHON='/usr/bin/python3'
-                source /home/ubuntu/.local/bin/virtualenvwrapper.sh
-            按esc退出后，输入Shift+:wq，按enter确认，最后终端输入`source ~/.bashrc`
-        (6)创建虚拟环境输入: $mkvirtualenv --python=/usr/bin/python3 lagouscrapy
-        (7)查询虚拟环境输入: $workon
-        (8)登入虚拟环境输入: $workon lagouscrapy
-        (9)虚拟环境下退出虚拟环境输入: $deactivate
+	(1)安装python3.5 for pip: $sudo apt-get install python3.5
+	(2)安装python2.7 for pip: $sudo apt-get install python-pip
+	(3)安装python3.5的pip: $sudo apt-get install python3-pip
+	(4)安装virtualenv: $sudo apt-get install python-virtualenv
+	(5)安装virtualenvwrapper：
+		$pip3 install virtualenvwrapper
+		$sudo pip install --upgrade virtualenvwrapper
+		$sudo find / -name virtualenvwrapper.sh查看它的安装路径
+		$vim ~/.bashrc，shift+G跳转到最后一行，输入insert，然后写入：
+			export WORKON_HOME=$HOME/.virtualenvs
+			export VIRTUALENVWRAPPER_PYTHON='/usr/bin/python3'
+			source /home/ubuntu/.local/bin/virtualenvwrapper.sh
+		按esc退出后，输入Shift+:wq，按enter确认，最后终端运行source ~/.bashrc
+	(6)创建虚拟环境终端运行: $mkvirtualenv --python=/usr/bin/python3 lagouscrapy
+	(7)查询虚拟环境终端运行: $workon
+	(8)登入虚拟环境终端运行: $workon lagouscrapy
+	(9)退出虚拟环境终端运行: $deactivate
 	
 
 ## 虚拟环境下安装爬虫框架和项目依赖库
@@ -107,7 +108,8 @@
 		
 (2)服务器安装scrapyd
 
-	终端$pip install scrapyd，然后修改scrapyd文件夹下的default_scrapyd.conf文件的bind_address改为0.0.0.0，并把云服务器6800端口只对特定的客户端IP开放(免得其他用户干坏事)，然后在项目安放的路径下打开终端输入scrapyd，启动服务
+	终端运行$pip install scrapyd，然后修改scrapyd文件夹下的default_scrapyd.conf文件的bind_address改为0.0.0.0，
+	并把云服务器6800端口只对特定的客户端IP开放(免得其他用户干坏事)，然后在项目安放的路径下打开终端输入scrapyd，启动服务
 
 (3)客户端安装scrapyd-client客户端
 
@@ -115,11 +117,13 @@
 
 (4)客户端终端进入虚拟运行环境
 
-	终端输入$workon py3scrapy，然后进入项目路径: $cd /home/zmz/PycharmProjects/LagouSpider，注意设置好爬虫工程项目下的scrapy.cfg文件的服务器地址端口
+	终端运行$workon py3scrapy，然后进入项目路径: $cd /home/zmz/PycharmProjects/LagouSpider
+	注意设置好爬虫工程项目下的scrapy.cfg文件的服务器地址端口
 
 (5)部署项目到服务器
 
-	客户端终端运行$scrapyd-deploy zmingz -p LagouSpider --version 1.0.0，zmingz和LagouSpider名称从项目的scrapy.cfg文件查得
+	客户端终端运行$scrapyd-deploy zmingz -p LagouSpider --version 1.0.0
+	zmingz和LagouSpider名称从项目的scrapy.cfg文件查得
 
 (6)客户端浏览器查看爬虫运行信息
 
@@ -131,11 +135,14 @@
 
 (8)客户端发起运行爬虫指令
 
-	终端运行schedule.json运行爬虫: $curl http://111.222.333.444:6800/schedule.json -d project=LagouSpider -d spider=lagou
+	终端运行schedule.json运行爬虫: 
+	$curl http://111.222.333.444:6800/schedule.json -d project=LagouSpider -d spider=lagou
 
 (9)客户端发起中止爬虫指令
 
-	终端运行cancel.json中止爬虫: $curl http://111.222.333.444:6800/cancel.json -d project=LagouSpider -d job=6487ec77947edab326d，job的值需查看浏览器可得
+	终端运行cancel.json中止爬虫: 
+	$curl http://111.222.333.444:6800/cancel.json -d project=LagouSpider -d job=6487ec77947edab326d
+	job的值需查看浏览器可得
 
 
 如果觉得文档对你有帮助，请给个star吧。
