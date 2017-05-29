@@ -46,7 +46,7 @@
             $sudo pip install --upgrade virtualenvwrapper
             $sudo find / -name virtualenvwrapper.sh查看它的安装路径在"/home/ubuntu/.local/bin/virtualenvwrapper.sh"
             $vim ~/.bashrc，shift+G跳转到最后一行，输入insert，然后写入：
-                    export WORKON_HOME=$HOME/.virtualenvs
+                export WORKON_HOME=$HOME/.virtualenvs
                 export VIRTUALENVWRAPPER_PYTHON='/usr/bin/python3'
                 source /home/ubuntu/.local/bin/virtualenvwrapper.sh
             按esc退出后，输入Shift+:wq，按enter确认，最后终端输入`source ~/.bashrc`
@@ -67,7 +67,7 @@
 <br>
 (5)安装mysqlclient，具体步骤如下:
 
-            $sudo apt-get install libmysql-dev 
+		$sudo apt-get install libmysql-dev 
 		$sudo apt-get install libmysqlclient-dev
 		$sudo apt-get install python-dev
 		$pip install mysqlclient   
@@ -102,23 +102,40 @@
 
 ## 项目部署
 (1)服务器安装好爬虫的运行环境
-<br>
-(2)服务器安装scrapyd: `$pip install scrapyd`，然后修改scrapyd文件夹下的default_scrapyd.conf文件的bind_address改为0.0.0.0，并把云服务器6800端口只对特定的客户端IP开放(免得其他用户干坏事)，然后在项目安放的路径下打开终端输入`scrapyd`，启动服务
-<br>
-(3)客户端安装scrapyd-client: `$pip install scrapyd-client`
-<br>
-(4)客户端终端进入虚拟运行环境: `$workon py3scrapy`，然后进入项目路径: `$cd /home/zmz/PycharmProjects/LagouSpider`，注意设置好爬虫工程项目下的scrapy.cfg文件的服务器地址端口
-<br>
-(e)客户端终端运行`$scrapyd-deploy zmingz -p LagouSpider`，zmingz和LagouSpider名称从项目的scrapy.cfg文件查得
-<br>
-(f)浏览器打开网址`111.222.333.444:6800`可观察项目爬虫状态，其中111.222.333.444是服务器地址
-<br>
-(g)终端运行daemonstatus.json查看scrapy状态:`curl http://111.222.333.444:6800/daemonstatus.json`
-<br>
-(h)终端运行schedule.json运行爬虫:`curl http://111.222.333.444:6800/schedule.json -d project=LagouSpider -d spider=lagou`
-<br>
-(i)终端运行cancel.json中止爬虫:`curl http://111.222.333.444:6800/cancel.json -d project=LagouSpider -d job=6487ec77947edab326d`，job的值需查看浏览器可得
-<br>
+
+	参考《服务器安装mysql数据库》，《python和虚拟环境的安装以及配置》
+		
+(2)服务器安装scrapyd
+
+	终端$pip install scrapyd，然后修改scrapyd文件夹下的default_scrapyd.conf文件的bind_address改为0.0.0.0，并把云服务器6800端口只对特定的客户端IP开放(免得其他用户干坏事)，然后在项目安放的路径下打开终端输入scrapyd，启动服务
+
+(3)客户端安装scrapyd-client客户端
+
+	$pip install scrapyd-client
+
+(4)客户端终端进入虚拟运行环境
+
+	终端输入$workon py3scrapy，然后进入项目路径: $cd /home/zmz/PycharmProjects/LagouSpider，注意设置好爬虫工程项目下的scrapy.cfg文件的服务器地址端口
+
+(5)部署项目到服务器
+
+	客户端终端运行$scrapyd-deploy zmingz -p LagouSpider --version 1.0.0，zmingz和LagouSpider名称从项目的scrapy.cfg文件查得
+
+(6)客户端浏览器查看爬虫运行信息
+
+	浏览器打开网址111.222.333.444:6800，可观察项目爬虫状态，其中111.222.333.444是服务器地址
+
+(7)客户端发起查看爬虫运行状态指令
+
+	终端运行daemonstatus.json查看scrapy状态: $curl http://111.222.333.444:6800/daemonstatus.json
+
+(8)客户端发起运行爬虫指令
+
+	终端运行schedule.json运行爬虫: $curl http://111.222.333.444:6800/schedule.json -d project=LagouSpider -d spider=lagou
+
+(9)客户端发起中止爬虫指令
+
+	终端运行cancel.json中止爬虫: $curl http://111.222.333.444:6800/cancel.json -d project=LagouSpider -d job=6487ec77947edab326d，job的值需查看浏览器可得
 
 
 如果觉得文档对你有帮助，请给个star吧。
